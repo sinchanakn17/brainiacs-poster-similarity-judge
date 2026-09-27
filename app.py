@@ -70,7 +70,7 @@ def clip_score(pil_a, pil_b):
     import torch
     inputs = processor(images=[pil_a.convert("RGB"), pil_b.convert("RGB")], return_tensors="pt")
     with torch.no_grad():
-        feats = model.get_image_features(**inputs)
+        feats = model.get_image_features(**inputs).pooler_output
         feats = feats / feats.norm(dim=-1, keepdim=True)
         sim = float((feats[0] @ feats[1]).item())
     # CLIP cosine similarity typically lies around 0..1 for related images.
